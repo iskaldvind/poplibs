@@ -1,5 +1,10 @@
 package io.iskaldvind.poplibs
 
 interface MainView {
-    fun setButtonText(index: Int, text: String)
+
+    fun setFirstCounter(text: String)
+
+    fun setSecondCounter(text: String)
+
+    fun setThirdCounter(text: String)
 }
