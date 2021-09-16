@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/poplibs.iml" filepath="$PROJECT_DIR$/.idea/modules/poplibs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/poplibs.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/poplibs.app.iml" />
+    </modules>
+  </component>
+</project>
