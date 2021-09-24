@@ -1,21 +1,19 @@
 package io.iskaldvind.poplibs
 
-class MainPresenter(private val view: MainView) {
+import com.github.terrakok.cicerone.Router
+import moxy.MvpPresenter
 
-    private val model = CountersModel()
 
-    fun counterClickFirst() = counterClickHandler(0)
+class MainPresenter(private val router: Router, private val screens: IScreens) : MvpPresenter<MainView>() {
 
-    fun counterClickSecond() = counterClickHandler(1)
 
-    fun counterClickThird() = counterClickHandler(2)
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        router.replaceScreen(screens.users())
+    }
 
-    private fun counterClickHandler(index: Int) {
-        val nextValue = model.next(index = index).toString()
-        when (index) {
-            0 -> view.setFirstCounter(nextValue)
-            1 -> view.setSecondCounter(nextValue)
-            2 -> view.setThirdCounter(nextValue)
-        }
+
+    fun backClicked() {
+        router.exit()
     }
 }

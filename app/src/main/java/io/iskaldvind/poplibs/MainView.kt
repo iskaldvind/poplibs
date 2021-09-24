@@ -1,10 +1,8 @@
 package io.iskaldvind.poplibs
 
-interface MainView {
+import moxy.MvpView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-    fun setFirstCounter(text: String)
-
-    fun setSecondCounter(text: String)
-
-    fun setThirdCounter(text: String)
-}
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface MainView: MvpView
