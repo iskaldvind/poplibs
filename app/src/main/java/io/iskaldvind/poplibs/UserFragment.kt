@@ -10,8 +10,6 @@ import moxy.ktx.moxyPresenter
 
 class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
 
-    private var user: GithubUser = GithubUser("")
-
     companion object {
         fun newInstance(user: GithubUser) : UserFragment {
             val fragment = UserFragment()
@@ -22,7 +20,11 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
         }
     }
 
-    val presenter: UserPresenter by moxyPresenter { UserPresenter(user, App.instance.router) }
+    private val user: GithubUser by lazy {
+        arguments?.getParcelable("user") ?: GithubUser("")
+    }
+
+    private val presenter: UserPresenter by moxyPresenter { UserPresenter(user, App.instance.router) }
 
     private var _binding: FragmentUserBinding? = null
     private val binding: FragmentUserBinding
@@ -32,15 +34,6 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentUserBinding.inflate(layoutInflater)
         return binding.root
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            user = it.getParcelable("user") ?: GithubUser("")
-        }
-        presenter
     }
 
 
