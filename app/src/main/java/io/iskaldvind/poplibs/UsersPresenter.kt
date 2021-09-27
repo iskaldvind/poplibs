@@ -1,7 +1,11 @@
 package io.iskaldvind.poplibs
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Observable.fromIterable
+import io.reactivex.rxjava3.core.Single
 import moxy.MvpPresenter
+import java.util.*
 
 
 class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router, private val screens: IScreens) : MvpPresenter<UsersView>() {
@@ -31,18 +35,24 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            usersRepo.getUsers()
-                .firstOrNull {
-                    it.login == itemView.getLogin()
-                }?.let {
-                    router.navigateTo( screens.user(it) )
-                }
+            usersRepo
+                .getUsers()
+                .toObservable()
+                .concatMap { users -> fromIterable(users as Iterable<GithubUser>) }
+                .filter { user -> user.login == itemView.getLogin() }
+                .subscribe { router.navigateTo( screens.user(it) )}
         }
     }
 
 
     private fun loadData() {
-        val users = usersRepo.getUsers()
+        usersRepo
+            .getUsers()
+            .subscribe(::handleUsers)
+    }
+
+
+    private fun handleUsers(users: List<GithubUser>) {
         usersListPresenter.users.addAll(users)
         viewState.updateList()
     }

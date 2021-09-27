@@ -1,7 +1,9 @@
 package io.iskaldvind.poplibs
 
-class GithubUsersRepo {
-    private val repositories = listOf(
+import io.reactivex.rxjava3.core.Single
+
+class GithubUsersRepo : IGithubUserRepo {
+    private val users = listOf(
         GithubUser("login1"),
         GithubUser("login2"),
         GithubUser("login3"),
@@ -9,7 +11,6 @@ class GithubUsersRepo {
         GithubUser("login5")
     )
 
-    fun getUsers() : List<GithubUser> {
-        return repositories
-    }
+    override fun getUsers() : Single<List<GithubUser>> =
+        Single.just(users)
 }
