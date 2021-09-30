@@ -1,4 +1,4 @@
-package io.iskaldvind.poplibs
+package io.iskaldvind.poplibs.data.user
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
