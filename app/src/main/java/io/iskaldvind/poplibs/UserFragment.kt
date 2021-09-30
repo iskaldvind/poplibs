@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import io.iskaldvind.poplibs.databinding.FragmentUserBinding
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -11,20 +12,21 @@ import moxy.ktx.moxyPresenter
 class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
 
     companion object {
-        fun newInstance(user: GithubUser) : UserFragment {
+
+        private const val LOGIN = "UserFragment.login"
+
+        fun newInstance(login: String) : UserFragment {
             val fragment = UserFragment()
-            val args = Bundle()
-            args.putParcelable("user", user)
-            fragment.arguments = args
+            fragment.arguments = bundleOf(LOGIN to login)
             return fragment
         }
     }
 
-    private val user: GithubUser by lazy {
-        arguments?.getParcelable("user") ?: GithubUser("")
+    private val login: String by lazy {
+        arguments?.getString(LOGIN) ?: ""
     }
 
-    private val presenter: UserPresenter by moxyPresenter { UserPresenter(user, App.instance.router) }
+    private val presenter: UserPresenter by moxyPresenter { UserPresenter(login, App.instance.router) }
 
     private var _binding: FragmentUserBinding? = null
     private val binding: FragmentUserBinding

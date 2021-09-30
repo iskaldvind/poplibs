@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import io.iskaldvind.poplibs.databinding.FragmentUsersBinding
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -43,6 +45,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     @SuppressLint("NotifyDataSetChanged")
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun showError(err: Throwable) {
+        Toast.makeText(requireContext(), err.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun backPressed() = presenter.backPressed()
