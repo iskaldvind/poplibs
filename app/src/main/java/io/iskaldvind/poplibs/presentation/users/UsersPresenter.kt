@@ -5,11 +5,16 @@ import io.iskaldvind.poplibs.data.user.IGithubUserRepository
 import io.iskaldvind.poplibs.presentation.GithubUserViewModel
 import io.iskaldvind.poplibs.presentation.user.UserScreen
 import io.iskaldvind.poplibs.presentation.GithubUserViewModel.Mapper
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.iskaldvind.poplibs.scheduler.Schedulers
+import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
 
-class UsersPresenter(private val usersRepo: IGithubUserRepository, private val router: Router) : MvpPresenter<UsersView>() {
+class UsersPresenter(
+    private val usersRepo: IGithubUserRepository,
+    private val router: Router,
+    private val schedulers: Schedulers
+) : MvpPresenter<UsersView>() {
 
 
     private val disposables = CompositeDisposable()
@@ -17,15 +22,13 @@ class UsersPresenter(private val usersRepo: IGithubUserRepository, private val r
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        loadData()
-    }
-
-
-    private fun loadData() {
         disposables.add(
             usersRepo
                 .getUsers()
+                .observeOn(schedulers.background())
                 .map { users -> users.map(Mapper::map) }
+                .observeOn(schedulers.main())
+                .subscribeOn(schedulers.background())
                 .subscribe(viewState::showUsers, viewState::showError)
         )
     }

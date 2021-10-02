@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">poplibs</string>
     <string name="login_label">login</string>
+    <string name="convert_label">convert</string>
 </resources>

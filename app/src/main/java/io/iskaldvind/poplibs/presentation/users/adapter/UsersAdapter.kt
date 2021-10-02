@@ -1,6 +1,5 @@
 package io.iskaldvind.poplibs.presentation.users.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -14,7 +13,6 @@ class UsersAdapter(private val delegate: Delegate?): ListAdapter<GithubUserViewM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        Log.d("CREATE", "HIT")
         return UserViewHolder(
             LayoutInflater
                 .from(parent.context)
@@ -23,7 +21,6 @@ class UsersAdapter(private val delegate: Delegate?): ListAdapter<GithubUserViewM
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        Log.d("ON BIND", "HIT")
         holder.bind(getItem(position), delegate)
     }
 }

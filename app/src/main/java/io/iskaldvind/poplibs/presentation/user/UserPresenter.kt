@@ -1,13 +1,27 @@
 package io.iskaldvind.poplibs.presentation.user
 
-import com.github.terrakok.cicerone.Router
+import io.iskaldvind.poplibs.data.user.IGithubUserRepository
+import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpPresenter
+import io.iskaldvind.poplibs.presentation.GithubUserViewModel.Mapper
 
 
-class UserPresenter(private val login: String, private val router: Router) : MvpPresenter<UserView>() {
+class UserPresenter(
+    private val login: String,
+    private val userRepository: IGithubUserRepository
+) : MvpPresenter<UserView>() {
+
+    private val disposables = CompositeDisposable()
 
     override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        viewState.setLogin(login)
+        disposables.add(
+            userRepository
+                .getUserByLogin(login)
+                .map(Mapper::map)
+                .subscribe(
+                    viewState::showUser,
+                    viewState::showError
+                )
+        )
     }
 }

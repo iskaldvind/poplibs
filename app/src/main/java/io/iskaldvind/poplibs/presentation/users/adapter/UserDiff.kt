@@ -8,13 +8,11 @@ object UserDiff : DiffUtil.ItemCallback<GithubUserViewModel>() {
     private val payload = Any()
 
     override fun areItemsTheSame(oldItem: GithubUserViewModel, newItem: GithubUserViewModel): Boolean {
-        return false
-        //return oldItem.login == newItem.login
+        return oldItem.login == newItem.login
     }
 
     override fun areContentsTheSame(oldItem: GithubUserViewModel, newItem: GithubUserViewModel): Boolean {
-        return false
-        //return oldItem == newItem
+        return oldItem == newItem
     }
 
     override fun getChangePayload(oldItem: GithubUserViewModel, newItem: GithubUserViewModel) = payload
