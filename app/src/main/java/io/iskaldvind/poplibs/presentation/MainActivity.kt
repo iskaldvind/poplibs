@@ -17,7 +17,7 @@ class MainActivity : MvpAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        savedInstanceState ?: router.newRootScreen(ConverterScreen)
+        savedInstanceState ?: router.newRootScreen(UsersScreen)
     }
 
 

@@ -8,7 +8,8 @@ import io.iskaldvind.poplibs.presentation.GithubUserViewModel.Mapper
 
 class UserPresenter(
     private val login: String,
-    private val userRepository: IGithubUserRepository
+    private val userRepository: IGithubUserRepository,
+    private val schedulers: io.iskaldvind.poplibs.scheduler.Schedulers
 ) : MvpPresenter<UserView>() {
 
     private val disposables = CompositeDisposable()
@@ -18,6 +19,8 @@ class UserPresenter(
             userRepository
                 .getUserByLogin(login)
                 .map(Mapper::map)
+                .observeOn(schedulers.main())
+                .subscribeOn(schedulers.background())
                 .subscribe(
                     viewState::showUser,
                     viewState::showError

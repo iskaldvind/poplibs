@@ -8,6 +8,7 @@ import io.iskaldvind.poplibs.R.layout.fragment_user
 import io.iskaldvind.poplibs.arguments
 import io.iskaldvind.poplibs.data.user.GithubUserRepositoryFactory
 import io.iskaldvind.poplibs.presentation.GithubUserViewModel
+import io.iskaldvind.poplibs.scheduler.SchedulersFactory
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -28,7 +29,10 @@ class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
 
     @Suppress("unused")
     private val presenter: UserPresenter by moxyPresenter {
-        UserPresenter(login, GithubUserRepositoryFactory.create())
+        UserPresenter(
+            login,
+            GithubUserRepositoryFactory.create(),
+            SchedulersFactory.create())
     }
 
 
