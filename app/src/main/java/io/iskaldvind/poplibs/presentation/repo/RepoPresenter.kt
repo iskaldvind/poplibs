@@ -16,6 +16,7 @@ class RepoPresenter(
     private val disposables = CompositeDisposable()
 
     override fun onFirstViewAttach() {
+        Log.d("LOGGER", "URL: $url")
         disposables.add(
             repoRepository
                 .getRepo(url)

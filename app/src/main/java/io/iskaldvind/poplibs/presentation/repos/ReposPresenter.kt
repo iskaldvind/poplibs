@@ -1,6 +1,5 @@
 package io.iskaldvind.poplibs.presentation.repos
 
-import android.util.Log
 import com.github.terrakok.cicerone.Router
 import io.iskaldvind.poplibs.data.repo.IGithubRepoRepository
 import io.iskaldvind.poplibs.presentation.GithubRepoViewModel

@@ -1,6 +1,5 @@
 package io.iskaldvind.poplibs.presentation.user
 
-import android.util.Log
 import com.github.terrakok.cicerone.Router
 import io.iskaldvind.poplibs.data.user.IGithubUserRepository
 import io.reactivex.disposables.CompositeDisposable

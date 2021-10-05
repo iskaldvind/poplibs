@@ -8,6 +8,6 @@ import io.iskaldvind.poplibs.presentation.user.UserFragment
 class RepoScreen(private val url: String) : FragmentScreen {
 
     override fun createFragment(factory: FragmentFactory): Fragment =
-        UserFragment.newInstance(url)
+        RepoFragment.newInstance(url)
 
 }

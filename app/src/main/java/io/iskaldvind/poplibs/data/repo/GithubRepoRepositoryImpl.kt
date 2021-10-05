@@ -17,7 +17,6 @@ class GithubRepoRepositoryImpl(
             .fetchRepos(url)
 
     override fun getRepo(url: String): Observable<GithubRepo> {
-        Log.d("!!! !!!", ">> $url")
         return Observable.concat(
             githubRepoCacheDataSource
                 .fetchRepo(url)
