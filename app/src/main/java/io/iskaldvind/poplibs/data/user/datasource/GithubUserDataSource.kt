@@ -6,4 +6,6 @@ import io.reactivex.Single
 interface GithubUserDataSource {
 
     fun fetchUsers(): Single<List<GithubUser>>
+
+    fun fetchUserByLogin(login: String): Single<GithubUser>
 }

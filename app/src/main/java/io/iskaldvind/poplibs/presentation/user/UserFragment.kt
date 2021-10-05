@@ -3,6 +3,7 @@ package io.iskaldvind.poplibs.presentation.user
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.iskaldvind.poplibs.App.Navigation.router
 import io.iskaldvind.poplibs.databinding.FragmentUserBinding
 import io.iskaldvind.poplibs.R.layout.fragment_user
 import io.iskaldvind.poplibs.arguments
@@ -32,7 +33,9 @@ class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
         UserPresenter(
             login,
             GithubUserRepositoryFactory.create(),
-            SchedulersFactory.create())
+            SchedulersFactory.create(),
+            router
+        )
     }
 
 
@@ -41,6 +44,7 @@ class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
 
     override fun showUser(user: GithubUserViewModel) {
         binding.login.text = user.login
+        binding.login.setOnClickListener { presenter.onUserClick() }
     }
 
     override fun showError(error: Throwable) {
