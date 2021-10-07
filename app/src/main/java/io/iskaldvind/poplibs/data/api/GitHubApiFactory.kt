@@ -14,7 +14,7 @@ object GitHubApiFactory {
             .client(
                 OkHttpClient.Builder()
                     .authenticator { route, response ->
-
+                        GithubApiInterceptor
                     }
                     .addInterceptor(GithubApiInterceptor)
                     .addInterceptor(HttpLoggingInterceptor().apply {
