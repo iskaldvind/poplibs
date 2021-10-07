@@ -5,6 +5,11 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+project.ext {
+    GITHUB_USER_NAME = System.getenv("GITHUB_USER_NAME") ?: "<not-set>"
+    GITHUB_USER_PASSWORD = System.getenv("GITHUB_USER_PASSWORD") ?: "<not-set>"
+}
+
 android {
     compileSdk 30
 
@@ -23,6 +28,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "GITHUB_USER_NAME", "\"$GITHUB_USER_NAME\"")
+            buildConfigField("String", "GITHUB_USER_PASSWORD", "\"$GITHUB_USER_PASSWORD\"")
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

@@ -1,6 +1,6 @@
 package io.iskaldvind.poplibs.data.api
 
-import okhttp3.OkHttpClient
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -13,6 +13,10 @@ object GitHubApiFactory {
             .baseUrl("https://api.github.com")
             .client(
                 OkHttpClient.Builder()
+                    .authenticator { route, response ->
+
+                    }
+                    .addInterceptor(GithubApiInterceptor)
                     .addInterceptor(HttpLoggingInterceptor().apply {
                         level = HttpLoggingInterceptor.Level.BODY
                     })
