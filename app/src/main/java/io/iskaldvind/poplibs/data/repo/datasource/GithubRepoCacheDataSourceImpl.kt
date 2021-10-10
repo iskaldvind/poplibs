@@ -1,38 +1,38 @@
 package io.iskaldvind.poplibs.data.repo.datasource
 
 import io.iskaldvind.poplibs.data.repo.GithubRepo
-import io.iskaldvind.poplibs.data.user.GithubUser
+import io.iskaldvind.poplibs.data.storage.GitHubStorage
+import io.reactivex.Maybe
 import io.reactivex.Single
-import java.lang.RuntimeException
 
-class GithubRepoCacheDataSourceImpl: GithubRepoCacheDataSource {
+class GithubRepoCacheDataSourceImpl(
+    private val gitHubStorage: GitHubStorage
+): GithubRepoCacheDataSource {
 
-    private val cache: MutableList<GithubRepo> = mutableListOf()
-
-    override fun retain(githubRepos: List<GithubRepo>): Single<List<GithubRepo>> =
-        Single.fromCallable {
-            cache.clear()
-            cache.addAll(githubRepos)
-            cache
-        }
+    override fun retain(githubRepos: List<GithubRepo>): Single<List<GithubRepo>> {
+        return gitHubStorage
+            .getGitHubRepoDao()
+            .retain(githubRepos)
+            .andThen(
+                gitHubStorage
+                    .getGitHubRepoDao()
+                    .getReposByHome(githubRepos[0].owner.home)
+                    .firstOrError()
+            )
+    }
 
     override fun retain(githubRepo: GithubRepo): Single<GithubRepo> =
-        Single.fromCallable {
-            cache.indexOf(githubRepo)
-                .takeIf { it != -1 }
-                ?.let { cache.removeAt(it); cache.add(githubRepo) }
-                ?: cache.add(githubRepo)
-            githubRepo
-        }
+        Single.fromCallable { githubRepo }
 
     override fun fetchRepos(url: String): Single<List<GithubRepo>> =
-        Single.just(cache)
+        gitHubStorage
+            .getGitHubRepoDao()
+            .getReposByHome(url)
+            .firstOrError()
 
-    override fun fetchRepo(url: String): Single<GithubRepo> =
-        Single.defer {
-            cache
-                .firstOrNull { it.url.equals(url, true) }
-                ?.let { Single.just(it) }
-                ?: Single.error(RuntimeException("User not found"))
-        }
+    override fun fetchRepo(url: String): Maybe<GithubRepo> =
+        gitHubStorage
+            .getGitHubRepoDao()
+            .fetchRepoByUrl(url)
+            .toMaybe()
 }

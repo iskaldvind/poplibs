@@ -8,8 +8,7 @@ object RepoDiff : DiffUtil.ItemCallback<GithubRepoViewModel>() {
     private val payload = Any()
 
     override fun areItemsTheSame(oldItem: GithubRepoViewModel, newItem: GithubRepoViewModel): Boolean {
-        return oldItem.owner == newItem.owner
-                && oldItem.url == newItem.url
+        return oldItem.url == newItem.url
                 && oldItem.title == newItem.title
                 && oldItem.forks == newItem.forks
     }

@@ -10,6 +10,7 @@ import io.iskaldvind.poplibs.arguments
 import io.iskaldvind.poplibs.data.user.GithubUserRepositoryFactory
 import io.iskaldvind.poplibs.presentation.GithubUserViewModel
 import io.iskaldvind.poplibs.scheduler.SchedulersFactory
+import io.iskaldvind.poplibs.setStartDrawableCircleImageFromUri
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -43,8 +44,11 @@ class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
 
 
     override fun showUser(user: GithubUserViewModel) {
-        binding.login.text = user.login
-        binding.login.setOnClickListener { presenter.onUserClick() }
+        with(binding) {
+            login.setStartDrawableCircleImageFromUri(user.avatar)
+            login.text = user.login
+            login.setOnClickListener { presenter.onUserClick() }
+        }
     }
 
     override fun showError(error: Throwable) {

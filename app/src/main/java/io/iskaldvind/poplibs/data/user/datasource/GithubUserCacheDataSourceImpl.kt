@@ -1,37 +1,37 @@
 package io.iskaldvind.poplibs.data.user.datasource
 
+import io.iskaldvind.poplibs.data.storage.GitHubStorage
 import io.iskaldvind.poplibs.data.user.GithubUser
+import io.reactivex.Maybe
 import io.reactivex.Single
-import java.lang.RuntimeException
 
-class GithubUserCacheDataSourceImpl: GithubUserCacheDataSource {
-
-    private val cache: MutableList<GithubUser> = mutableListOf()
+class GithubUserCacheDataSourceImpl(
+    private val gitHubStorage: GitHubStorage
+): GithubUserCacheDataSource {
 
     override fun retain(githubUsers: List<GithubUser>): Single<List<GithubUser>> =
-        Single.fromCallable {
-            cache.clear()
-            cache.addAll(githubUsers)
-            cache
-        }
+        gitHubStorage
+            .getGitHubUserDao()
+            .retain(githubUsers)
+            .andThen(
+                gitHubStorage
+                    .getGitHubUserDao()
+                    .getGitHubUsers()
+                    .firstOrError()
+            )
 
     override fun retain(githubUser: GithubUser): Single<GithubUser> =
-        Single.fromCallable {
-            cache.indexOf(githubUser)
-                .takeIf { it != -1 }
-                ?.let { cache.removeAt(it); cache.add(githubUser) }
-                ?: cache.add(githubUser)
-            githubUser
-        }
+       Single.fromCallable { githubUser }
 
     override fun fetchUsers(): Single<List<GithubUser>> =
-        Single.just(cache)
+        gitHubStorage
+            .getGitHubUserDao()
+            .getGitHubUsers()
+            .firstOrError()
 
-    override fun fetchUserByLogin(login: String): Single<GithubUser> =
-        Single.defer {
-            cache
-                .firstOrNull { it.login.equals(login, true) }
-                ?.let { Single.just(it) }
-                ?: Single.error(RuntimeException("User not found"))
-        }
+    override fun fetchUserByLogin(login: String): Maybe<GithubUser> =
+        gitHubStorage
+            .getGitHubUserDao()
+            .fetchUserByLogin(login)
+            .toMaybe()
 }

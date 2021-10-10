@@ -35,7 +35,8 @@ class UserPresenter(
         disposables.add(
             userRepository
                 .getUserByLogin(login)
-                .map { it.repos_url }
+                // .map { it.reposUrl.value }
+                .map { it.reposUrl }
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
                 .subscribe(

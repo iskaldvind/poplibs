@@ -1,31 +1,26 @@
 package io.iskaldvind.poplibs.data.repo
 
-import android.util.Log
 import io.iskaldvind.poplibs.data.repo.datasource.GithubRepoCacheDataSource
 import io.iskaldvind.poplibs.data.repo.datasource.GithubRepoDataSource
+import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Single
 
 
 class GithubRepoRepositoryImpl(
-    private val githubRepoDataSource: GithubRepoDataSource,
-    private val githubRepoCacheDataSource: GithubRepoCacheDataSource
+    private val cloud: GithubRepoDataSource,
+    private val cache: GithubRepoCacheDataSource
 ) : IGithubRepoRepository {
 
-    override fun getRepos(url: String) : Single<List<GithubRepo>> =
-        githubRepoDataSource
-            .fetchRepos(url)
-
-    override fun getRepo(url: String): Observable<GithubRepo> {
-        return Observable.concat(
-            githubRepoCacheDataSource
-                .fetchRepo(url)
-                .toObservable()
-                .onErrorResumeNext(Observable.empty()),
-            githubRepoDataSource
-                .fetchRepo(url)
-                .flatMap(githubRepoCacheDataSource::retain)
-                .toObservable()
+    override fun getRepos(url: String) : Observable<List<GithubRepo>> =
+        Observable.merge(
+            cache.fetchRepos(url).toObservable(),
+            cloud.fetchRepos(url).flatMap(cache::retain).toObservable()
         )
-    }
+
+
+    override fun getRepo(url: String): Maybe<GithubRepo> =
+        cache.fetchRepo(url)
+            .switchIfEmpty(
+                cloud.fetchRepo(url)
+            )
 }

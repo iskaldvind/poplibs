@@ -2,6 +2,7 @@ package io.iskaldvind.poplibs.data.user.datasource
 
 import io.iskaldvind.poplibs.data.api.GitHubApi
 import io.iskaldvind.poplibs.data.user.GithubUser
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 class GithubUserDataSourceImpl(
@@ -13,7 +14,8 @@ class GithubUserDataSourceImpl(
             .fetchUsers()
             .map { it.sortedBy(GithubUser::login) }
 
-    override fun fetchUserByLogin(login: String): Single<GithubUser> =
+    override fun fetchUserByLogin(login: String): Maybe<GithubUser> =
         githubApi
             .fetchUserByLogin(login)
+            .toMaybe()
 }

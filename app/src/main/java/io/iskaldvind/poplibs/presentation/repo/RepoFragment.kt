@@ -42,7 +42,6 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repo), RepoView {
 
     override fun showRepo(repo: GithubRepoViewModel) {
         with(binding) {
-            owner.text = repo.owner
             title.text = repo.title
             url.text = repo.url
             val forksText = "Forks: ${repo.forks}"

@@ -1,6 +1,7 @@
 package io.iskaldvind.poplibs.presentation.repos
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -49,6 +50,7 @@ class ReposFragment : MvpAppCompatFragment(R.layout.fragment_repos), ReposView, 
 
 
     override fun showRepos(repos: List<GithubRepoViewModel>) {
+        Log.d("!!!", "Show: ${repos.size}, $repos")
         adapter.submitList(repos)
     }
 

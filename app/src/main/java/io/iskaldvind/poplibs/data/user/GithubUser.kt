@@ -1,10 +1,24 @@
 package io.iskaldvind.poplibs.data.user
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
-@Parcelize
+@Entity(tableName = "users")
 data class GithubUser(
+    @SerializedName("id")
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id: String,
+    @SerializedName("login")
+    @ColumnInfo(name = "login")
     val login: String,
-    val repos_url: String
-) : Parcelable
+    @SerializedName("repos_url")
+    @ColumnInfo(name = "reposUrl")
+    val reposUrl: String,
+    @SerializedName("avatar_url")
+    @ColumnInfo(name = "avatar")
+    val avatar: String
+)
+
