@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import io.iskaldvind.poplibs.R.layout.fragment_user
-import io.iskaldvind.poplibs.presentation.GithubUserViewModel
+import io.iskaldvind.poplibs.presentation.GitHubUserViewModel
 
-class UsersAdapter(private val delegate: Delegate?): ListAdapter<GithubUserViewModel, UserViewHolder>(UserDiff) {
+class UsersAdapter(private val delegate: Delegate?): ListAdapter<GitHubUserViewModel, UserViewHolder>(UserDiff) {
 
     interface Delegate {
-        fun onUserPicked(user: GithubUserViewModel)
+        fun onUserPicked(user: GitHubUserViewModel)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {

@@ -4,7 +4,7 @@ import io.iskaldvind.poplibs.data.repo.GithubRepo
 import io.reactivex.Maybe
 import io.reactivex.Single
 
-interface GithubRepoDataSource {
+interface GitHubRepoDataSource {
 
     fun fetchRepos(url: String): Single<List<GithubRepo>>
 

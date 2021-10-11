@@ -5,15 +5,15 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.iskaldvind.poplibs.R
 import io.iskaldvind.poplibs.arguments
-import io.iskaldvind.poplibs.data.repo.GithubRepoRepositoryFactory
+import io.iskaldvind.poplibs.data.repo.GitHubRepoRepository
 import io.iskaldvind.poplibs.databinding.FragmentRepoBinding
-import io.iskaldvind.poplibs.presentation.GithubRepoViewModel
-import io.iskaldvind.poplibs.scheduler.SchedulersFactory
-import moxy.MvpAppCompatFragment
+import io.iskaldvind.poplibs.presentation.GitHubRepoViewModel
+import io.iskaldvind.poplibs.presentation.abs.AbsFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 
-class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repo), RepoView {
+class RepoFragment : AbsFragment(R.layout.fragment_repo), RepoView {
 
     companion object {
 
@@ -24,6 +24,9 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repo), RepoView {
 
     }
 
+    @Inject
+    lateinit var gitHubRepoRepository: GitHubRepoRepository
+
     private val url: String by lazy {
         arguments?.getString(URL).orEmpty()
     }
@@ -32,15 +35,16 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repo), RepoView {
     private val presenter: RepoPresenter by moxyPresenter {
         RepoPresenter(
             url,
-            GithubRepoRepositoryFactory.create(),
-            SchedulersFactory.create())
+            gitHubRepoRepository,
+            schedulers
+        )
     }
 
 
     private val binding: FragmentRepoBinding by viewBinding()
 
 
-    override fun showRepo(repo: GithubRepoViewModel) {
+    override fun showRepo(repo: GitHubRepoViewModel) {
         with(binding) {
             title.text = repo.title
             url.text = repo.url

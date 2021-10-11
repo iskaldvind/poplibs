@@ -3,19 +3,18 @@ package io.iskaldvind.poplibs.presentation.user
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
-import io.iskaldvind.poplibs.App.Navigation.router
 import io.iskaldvind.poplibs.databinding.FragmentUserBinding
 import io.iskaldvind.poplibs.R.layout.fragment_user
 import io.iskaldvind.poplibs.arguments
-import io.iskaldvind.poplibs.data.user.GithubUserRepositoryFactory
-import io.iskaldvind.poplibs.presentation.GithubUserViewModel
-import io.iskaldvind.poplibs.scheduler.SchedulersFactory
+import io.iskaldvind.poplibs.data.user.GitHubUserRepository
+import io.iskaldvind.poplibs.presentation.GitHubUserViewModel
+import io.iskaldvind.poplibs.presentation.abs.AbsFragment
 import io.iskaldvind.poplibs.setStartDrawableCircleImageFromUri
-import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 
-class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
+class UserFragment : AbsFragment(fragment_user), UserView {
 
     companion object {
 
@@ -25,6 +24,9 @@ class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
 
     }
 
+    @Inject
+    lateinit var gitHubUserRepository: GitHubUserRepository
+
     private val login: String by lazy {
         arguments?.getString(LOGIN).orEmpty()
     }
@@ -33,17 +35,15 @@ class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
     private val presenter: UserPresenter by moxyPresenter {
         UserPresenter(
             login,
-            GithubUserRepositoryFactory.create(),
-            SchedulersFactory.create(),
+            gitHubUserRepository,
+            schedulers,
             router
         )
     }
 
-
     private val binding: FragmentUserBinding by viewBinding()
 
-
-    override fun showUser(user: GithubUserViewModel) {
+    override fun showUser(user: GitHubUserViewModel) {
         with(binding) {
             login.setStartDrawableCircleImageFromUri(user.avatar)
             login.text = user.login

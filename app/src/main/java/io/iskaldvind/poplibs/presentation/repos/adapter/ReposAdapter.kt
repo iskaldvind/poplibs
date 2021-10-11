@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import io.iskaldvind.poplibs.R
-import io.iskaldvind.poplibs.presentation.GithubRepoViewModel
+import io.iskaldvind.poplibs.presentation.GitHubRepoViewModel
 
 
-class ReposAdapter(private val delegate: Delegate?): ListAdapter<GithubRepoViewModel, RepoViewHolder>(
+class ReposAdapter(private val delegate: Delegate?): ListAdapter<GitHubRepoViewModel, RepoViewHolder>(
     RepoDiff
 ) {
 
     interface Delegate {
-        fun onRepoPicked(repo: GithubRepoViewModel)
+        fun onRepoPicked(repo: GitHubRepoViewModel)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {

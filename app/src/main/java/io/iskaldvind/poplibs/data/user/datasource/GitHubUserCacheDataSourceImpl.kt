@@ -1,18 +1,20 @@
 package io.iskaldvind.poplibs.data.user.datasource
 
 import io.iskaldvind.poplibs.data.storage.GitHubStorage
-import io.iskaldvind.poplibs.data.user.GithubUser
+import io.iskaldvind.poplibs.data.user.GitHubUser
 import io.reactivex.Maybe
 import io.reactivex.Single
+import javax.inject.Inject
 
-class GithubUserCacheDataSourceImpl(
+class GitHubUserCacheDataSourceImpl
+@Inject constructor(
     private val gitHubStorage: GitHubStorage
-): GithubUserCacheDataSource {
+): GitHubUserCacheDataSource {
 
-    override fun retain(githubUsers: List<GithubUser>): Single<List<GithubUser>> =
+    override fun retain(gitHubUsers: List<GitHubUser>): Single<List<GitHubUser>> =
         gitHubStorage
             .getGitHubUserDao()
-            .retain(githubUsers)
+            .retain(gitHubUsers)
             .andThen(
                 gitHubStorage
                     .getGitHubUserDao()
@@ -20,16 +22,16 @@ class GithubUserCacheDataSourceImpl(
                     .firstOrError()
             )
 
-    override fun retain(githubUser: GithubUser): Single<GithubUser> =
-       Single.fromCallable { githubUser }
+    override fun retain(gitHubUser: GitHubUser): Single<GitHubUser> =
+       Single.fromCallable { gitHubUser }
 
-    override fun fetchUsers(): Single<List<GithubUser>> =
+    override fun fetchUsers(): Single<List<GitHubUser>> =
         gitHubStorage
             .getGitHubUserDao()
             .getGitHubUsers()
             .firstOrError()
 
-    override fun fetchUserByLogin(login: String): Maybe<GithubUser> =
+    override fun fetchUserByLogin(login: String): Maybe<GitHubUser> =
         gitHubStorage
             .getGitHubUserDao()
             .fetchUserByLogin(login)

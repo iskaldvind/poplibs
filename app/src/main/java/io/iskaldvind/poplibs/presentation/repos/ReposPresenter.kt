@@ -1,15 +1,15 @@
 package io.iskaldvind.poplibs.presentation.repos
 
 import com.github.terrakok.cicerone.Router
-import io.iskaldvind.poplibs.data.repo.IGithubRepoRepository
-import io.iskaldvind.poplibs.presentation.GithubRepoViewModel
+import io.iskaldvind.poplibs.data.repo.GitHubRepoRepository
+import io.iskaldvind.poplibs.presentation.GitHubRepoViewModel
 import io.iskaldvind.poplibs.presentation.repo.RepoScreen
 import io.iskaldvind.poplibs.scheduler.Schedulers
 import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
 class ReposPresenter(
-    private val reposRepo: IGithubRepoRepository,
+    private val reposRepo: GitHubRepoRepository,
     private val router: Router,
     private val schedulers: Schedulers,
     private val url: String
@@ -25,7 +25,7 @@ class ReposPresenter(
             reposRepo
                 .getRepos(url)
                 .observeOn(schedulers.background())
-                .map { repos -> repos.map(GithubRepoViewModel.Mapper::map) }
+                .map { repos -> repos.map(GitHubRepoViewModel.Mapper::map) }
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
                 .subscribe(viewState::showRepos, viewState::showError)
@@ -33,7 +33,7 @@ class ReposPresenter(
     }
 
 
-    fun displayRepo(repo: GithubRepoViewModel) {
+    fun displayRepo(repo: GitHubRepoViewModel) {
         router.navigateTo(RepoScreen(repo.url))
     }
 

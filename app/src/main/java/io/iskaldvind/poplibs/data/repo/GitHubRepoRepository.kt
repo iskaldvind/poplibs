@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 
-interface IGithubRepoRepository {
+interface GitHubRepoRepository {
 
     fun getRepos(url: String): Observable<List<GithubRepo>>
 

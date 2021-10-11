@@ -4,10 +4,12 @@ import io.iskaldvind.poplibs.data.repo.GithubRepo
 import io.iskaldvind.poplibs.data.storage.GitHubStorage
 import io.reactivex.Maybe
 import io.reactivex.Single
+import javax.inject.Inject
 
-class GithubRepoCacheDataSourceImpl(
+class GitHubRepoCacheDataSourceImpl
+@Inject constructor (
     private val gitHubStorage: GitHubStorage
-): GithubRepoCacheDataSource {
+): GitHubRepoCacheDataSource {
 
     override fun retain(githubRepos: List<GithubRepo>): Single<List<GithubRepo>> {
         return gitHubStorage

@@ -1,30 +1,22 @@
 package io.iskaldvind.poplibs
 
-import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
 import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.Router
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
+import io.iskaldvind.poplibs.di.DaggerAppComponent
+import io.iskaldvind.poplibs.scheduler.DefaultSchedulers
 
-class App : Application() {
+class App : DaggerApplication() {
 
-    @SuppressLint("StaticFieldLeak")
-    object ContextHolder { lateinit var context: Context }
-
-    companion object Navigation {
-
-        private val cicerone: Cicerone<Router> by lazy {
-            Cicerone.create()
-        }
-
-        val navigatorHolder = cicerone.getNavigatorHolder()
-
-        val router = cicerone.router
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-
-        ContextHolder.context = applicationContext
-    }
+    override fun applicationInjector(): AndroidInjector<out App> =
+        DaggerAppComponent
+            .builder()
+            .withContext(applicationContext)
+            .apply {
+                val cicerone = Cicerone.create()
+                withRouter(cicerone.router)
+                withNavigatorHolder(cicerone.getNavigatorHolder())
+            }
+            .withSchedulers(DefaultSchedulers())
+            .build()
 }

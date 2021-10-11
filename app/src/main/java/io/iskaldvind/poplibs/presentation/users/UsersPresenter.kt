@@ -1,17 +1,17 @@
 package io.iskaldvind.poplibs.presentation.users
 
 import com.github.terrakok.cicerone.Router
-import io.iskaldvind.poplibs.data.user.IGithubUserRepository
-import io.iskaldvind.poplibs.presentation.GithubUserViewModel
+import io.iskaldvind.poplibs.data.user.GitHubUserRepository
+import io.iskaldvind.poplibs.presentation.GitHubUserViewModel
 import io.iskaldvind.poplibs.presentation.user.UserScreen
-import io.iskaldvind.poplibs.presentation.GithubUserViewModel.Mapper
+import io.iskaldvind.poplibs.presentation.GitHubUserViewModel.Mapper
 import io.iskaldvind.poplibs.scheduler.Schedulers
 import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
 
 class UsersPresenter(
-    private val usersRepo: IGithubUserRepository,
+    private val usersRepo: GitHubUserRepository,
     private val router: Router,
     private val schedulers: Schedulers
 ) : MvpPresenter<UsersView>() {
@@ -34,7 +34,7 @@ class UsersPresenter(
     }
 
 
-    fun displayUser(user: GithubUserViewModel) {
+    fun displayUser(user: GitHubUserViewModel) {
         router.navigateTo(UserScreen(user.login))
     }
 

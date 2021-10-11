@@ -1,15 +1,17 @@
 package io.iskaldvind.poplibs.data.repo
 
-import io.iskaldvind.poplibs.data.repo.datasource.GithubRepoCacheDataSource
-import io.iskaldvind.poplibs.data.repo.datasource.GithubRepoDataSource
+import io.iskaldvind.poplibs.data.repo.datasource.GitHubRepoCacheDataSource
+import io.iskaldvind.poplibs.data.repo.datasource.GitHubRepoDataSource
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import javax.inject.Inject
 
 
-class GithubRepoRepositoryImpl(
-    private val cloud: GithubRepoDataSource,
-    private val cache: GithubRepoCacheDataSource
-) : IGithubRepoRepository {
+class GitHubRepoRepositoryImpl
+@Inject constructor (
+    private val cloud: GitHubRepoDataSource,
+    private val cache: GitHubRepoCacheDataSource
+) : GitHubRepoRepository {
 
     override fun getRepos(url: String) : Observable<List<GithubRepo>> =
         Observable.merge(

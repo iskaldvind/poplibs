@@ -4,10 +4,12 @@ import io.iskaldvind.poplibs.data.api.GitHubApi
 import io.iskaldvind.poplibs.data.repo.GithubRepo
 import io.reactivex.Maybe
 import io.reactivex.Single
+import javax.inject.Inject
 
-class GithubRepoDataSourceImpl(
+class GitHubRepoDataSourceImpl
+@Inject constructor(
     private val githubApi: GitHubApi
-): GithubRepoDataSource {
+): GitHubRepoDataSource {
 
     override fun fetchRepos(url: String): Single<List<GithubRepo>> =
         githubApi

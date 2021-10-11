@@ -2,8 +2,6 @@ package io.iskaldvind.poplibs.data.storage
 
 import androidx.room.*
 import io.iskaldvind.poplibs.data.repo.GithubRepo
-import io.iskaldvind.poplibs.data.repo.Owner
-import io.iskaldvind.poplibs.data.user.GithubUser
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

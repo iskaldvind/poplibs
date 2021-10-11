@@ -1,16 +1,16 @@
 package io.iskaldvind.poplibs.presentation.user
 
 import com.github.terrakok.cicerone.Router
-import io.iskaldvind.poplibs.data.user.IGithubUserRepository
+import io.iskaldvind.poplibs.data.user.GitHubUserRepository
 import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpPresenter
-import io.iskaldvind.poplibs.presentation.GithubUserViewModel.Mapper
+import io.iskaldvind.poplibs.presentation.GitHubUserViewModel.Mapper
 import io.iskaldvind.poplibs.presentation.repos.ReposScreen
 
 
 class UserPresenter(
     private val login: String,
-    private val userRepository: IGithubUserRepository,
+    private val userRepository: GitHubUserRepository,
     private val schedulers: io.iskaldvind.poplibs.scheduler.Schedulers,
     private val router: Router
 ) : MvpPresenter<UserView>() {
