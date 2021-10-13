@@ -1,18 +1,15 @@
 package io.iskaldvind.poplibs.presentation.converter
 
 import android.net.Uri
-import android.util.Log
-import io.iskaldvind.poplibs.data.converter.Converter
+import io.iskaldvind.poplibs.data.converter.IConverter
 import io.iskaldvind.poplibs.scheduler.Schedulers
-import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpPresenter
-import java.lang.RuntimeException
 
 
 class ConverterPresenter(
     private val schedulers: Schedulers,
-    private val converter: Converter
+    private val converter: IConverter
 ) : MvpPresenter<ConverterView>() {
 
     private val disposables = CompositeDisposable()
@@ -25,20 +22,11 @@ class ConverterPresenter(
     fun load(uri: Uri) {
         viewState.showLoading()
         disposables.add(
-            Completable
-                .create { emitter ->
-                    convert(uri).let {
-                        if (it) {
-                            emitter.onComplete()
-                        } else {
-                            emitter.onError(RuntimeException("Error"))
-                        }
-                    }
-                }
+            converter.convert(uri)
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.io())
                 .subscribe(
-                    viewState::showSuccess,
+                    { viewState.showSuccess() },
                     viewState::showError
                 )
         )
@@ -49,7 +37,4 @@ class ConverterPresenter(
         super.onDestroy()
         disposables.dispose()
     }
-
-
-    private fun convert(uri: Uri) = converter.convert(uri)
 }

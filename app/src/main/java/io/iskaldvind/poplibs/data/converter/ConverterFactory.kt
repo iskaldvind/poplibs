@@ -4,5 +4,5 @@ import android.content.Context
 
 object ConverterFactory {
 
-    fun create(context: Context): Converter = Converter(context)
+    fun create(context: Context): IConverter = ConverterImpl(context)
 }

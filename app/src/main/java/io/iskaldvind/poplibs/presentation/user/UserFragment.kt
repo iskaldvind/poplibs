@@ -39,7 +39,7 @@ class UserFragment : MvpAppCompatFragment(fragment_user), UserView {
         binding.login.text = user.login
     }
 
-    override fun showError(error: Throwable) {
-        Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_SHORT).show()
+    override fun showError(err: Throwable) {
+        Toast.makeText(requireContext(), err.toString(), Toast.LENGTH_SHORT).show()
     }
 }
